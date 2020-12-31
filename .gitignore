@@ -3,7 +3,7 @@
 *.classpath
 /**/.settings/
 rebel.xml
-misc.xml
+.idea/misc.xml
 dbnavigator.xml
 modules.xml
 vcs.xml
