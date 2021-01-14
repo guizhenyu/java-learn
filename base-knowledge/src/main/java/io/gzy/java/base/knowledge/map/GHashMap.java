@@ -173,6 +173,9 @@ public class GHashMap<K, V> extends AbstractMap<K, V>
 
 
         }
+
+        public void split(GHashMap<K, V> kvgHashMap, Node<K, V>[] newTab, int j, int oldCap) {
+        }
     }
 
 
@@ -325,8 +328,8 @@ public class GHashMap<K, V> extends AbstractMap<K, V>
      * @param o
      * @return
      */
-    private Node<K,V> newNode(int hash, K key, V value, Object o) {
-
+    private Node<K,V> newNode(int hash, K key, V value, Node<K, V> next) {
+        return new Node<>(hash, key, value, next);
     }
 
     /**
@@ -363,16 +366,65 @@ public class GHashMap<K, V> extends AbstractMap<K, V>
         // 此处的if为上面标记##的补充，也就是初始化时容量小于默认值16的，此时newThr没有赋值
         if (newThr == 0){
             float  ft = (float) (newCap * loadFactor);
-
+            // //判断是否new容量是否大于最大值，临界值是否大于最大值
+            newThr = (newCap < MAXMIUM_CAPCITY && ft < (float)MAXMIUM_CAPCITY ?
+                    (int)ft: Integer.MAX_VALUE);
         }
 
+
         //2. 根据新的容量，创建新的tab,并且把旧的tab中的值移到新的tab中
+        threshold = newThr;
+        Node<K, V>[] newTab = new Node[newCap];
 
-
-
-
-
-
+        table = newTab;
+        if (oldTab != null){
+            for(int j = 0; j < oldCap; ++j){
+                // 临时变量
+                Node<K, V> e;
+                if ((e = oldTab[j]) != null){
+                    oldTab[j] = null;
+                    if (e.next == null){
+                        newTab[e.hash & (newCap - 1)] = e;
+                    }
+                    else if (e instanceof TreeNode){
+                        ((TreeNode<K, V>)e).split(this, newTab, j, oldCap);
+                    }
+                    else {
+                        Node<K, V> loHead = null, loTail = null;
+                        Node<K, V> hiHead = null, hiTail = null;
+                        Node<K, V> next;
+                        do{
+                            next = e.next;
+                            if ((e.hash & oldCap) == 0){
+                                if (loTail == null){
+                                    loHead = e;
+                                }else{
+                                    loTail.next = e;
+                                }
+                                loTail = e;
+                            }
+                            else{
+                                if (hiTail == null){
+                                    hiHead = e;
+                                }else {
+                                    hiTail.next = e;
+                                }
+                                hiTail = e;
+                            }
+                        }while ((e = next) != null);
+                        if (loTail != null) {
+                            loTail.next = null;
+                            newTab[j] = loHead;
+                        }
+                        if (hiTail != null){
+                            hiTail.next = null;
+                            newTab[j + oldCap] = hiHead;
+                        }
+                    }
+                }
+            }
+        }
+        return newTab;
     }
 
 }
