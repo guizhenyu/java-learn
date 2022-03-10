@@ -3,20 +3,19 @@
 *.classpath
 /**/.settings/
 rebel.xml
-.idea/misc.xml
-dbnavigator.xml
-modules.xml
-vcs.xml
-workspace.xml
-inspectionProfiles/
 # Intellij
 *.iml
 */*.iml
+target
 */target/*
 **/target/*
 .idea/*
 *.log
 */.output/*
+
+#nacos
+.logs
+.work
 
 # eclipse
 .project

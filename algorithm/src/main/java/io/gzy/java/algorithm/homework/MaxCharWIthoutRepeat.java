@@ -13,9 +13,9 @@ public class MaxCharWIthoutRepeat {
 
     public int lengthOfLongestSubstring(String s) {
         int maxLength = 0;
-        if(StringUtils.){
-            return maxLength;
-        }
+//        if(StringUtils.){
+//            return maxLength;
+//        }
         char[] chars = s.toCharArray();
         Set<Character> set =new HashSet();
 

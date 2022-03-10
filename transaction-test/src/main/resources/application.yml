@@ -1,0 +1,47 @@
+server:
+  port: 5061
+spring:
+  application:
+    name: transaction-test-service
+  #  cloud:
+  #    loadbalancer:
+  #      retry:
+  #        enabled: true
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://10.16.32.177:3306/magic_mirror?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false
+#    username: magic_mirror
+#    password: qAjTe#YHK8dev
+    url: jdbc:mysql://localhost:3306/tc_test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+
+mapper:
+  identity: MYSQL
+  not-empty: false
+  enable-method-annotation: true
+  before: false
+  enum-as-simple-type: true
+  wrap-keyword: '`{0}`'
+  check-example-entity-class: true
+  use-simple-type: false
+mybatis:
+  type-aliases-package: io.guizhenyu.transaction.test.service.repository.model
+  mapper-locations:
+    - classpath*:mapper/*.xml
+

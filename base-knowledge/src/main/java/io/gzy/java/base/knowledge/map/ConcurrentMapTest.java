@@ -14,9 +14,9 @@ public class ConcurrentMapTest {
         System.out.println("start");
         Map<String, Integer> map = new ConcurrentHashMap<>(16);
 
-//        map.computeIfAbsent("AaAa", key ->{
-//            return map.computeIfAbsent("BBBB", key2->42);
-//        });
+        map.computeIfAbsent("AaAa", key ->{
+            return map.computeIfAbsent("BBBB", key2->42);
+        });
         map.put("AaAAa", 7);
         map.computeIfAbsent("AaAAa", k-> new Integer(9) );
         System.out.println(map.get("AaAAa"));
